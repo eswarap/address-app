@@ -2,7 +2,12 @@ var express = require('express');
 var app = express();
 var mongojs = require('mongojs');
 
-var db = mongojs('address',['contacts'])
+var db = mongojs('address',['contacts']);
+
+if (db == null ) {
+    db = mongojs("mongodb://admin:password@ds139899.mlab.com:39899/address");
+}
+
 var bodyParser = require('body-parser');
 
 app.use (express.static(__dirname+"/public"));
