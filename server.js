@@ -15,7 +15,9 @@ app.get('/api/contact/list',function(req,res){
    }); 
 });
 
-app
+app.post('/api/contact/list',function(req,res){
+    console.log(req.body);
+})
 
 app.listen(3000);
 console.log("Server running on port : 3000");

@@ -4,24 +4,22 @@ var myApp = angular.module('myApp', []);
 myApp.controller('AppCtrl', ['$scope', '$http', function($scope, $http) {
     console.log("Hello from controller");
        
-    $http({
-        method : 'GET',
-        url : '/api/contact/list'
-    }).then(function(response){
-        $scope.contactList = response.data;
-        console.log("data received");
-    },function(error) {
-        console.log("no data received");        
-    });
+    var refresh = function() {
+      $http.get('/contactlist').success(function(response) {
+        console.log("I got the data I requested");
+        $scope.contactlist = response;
+        $scope.contact = "";
+      });
+    };
     
-    $http({
-        method:'POST',
-        url:'api/contact/new'
-    }).then(function(response){
-
-        console.log(" new contact created");       
-    },function(error) {
-        console.log("no data received");        
-    });
+    refresh();
+    
+    $scope.addContact = function() {
+        console.log($scope.contact);
+        $http.post('/api/contact/list', $scope.contact).success(function(response) {
+        console.log(response);
+        refresh();
+        });
+    };
   
 }]);
