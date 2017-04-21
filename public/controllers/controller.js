@@ -4,11 +4,11 @@ var myApp = angular.module('myApp', []);
 myApp.controller('AppCtrl', ['$scope', '$http', function($scope, $http) {
     console.log("Hello from controller");
        
-    var refresh = function() {
-      $http.get('/contactlist').success(function(response) {
+   var refresh = function() {
+    $http.get('/api/contact/list').then(function(response) {
         console.log("I got the data I requested");
-        $scope.contactlist = response;
-        $scope.contact = "";
+        $scope.contactList = response.data;
+        $scope.contact = {};
       });
     };
     
@@ -16,10 +16,34 @@ myApp.controller('AppCtrl', ['$scope', '$http', function($scope, $http) {
     
     $scope.addContact = function() {
         console.log($scope.contact);
-        $http.post('/api/contact/list', $scope.contact).success(function(response) {
-        console.log(response);
-        refresh();
+        $http.post('/api/contact/new',$scope.contact).then(function(response){
+           console.log(response); 
+           refresh();
         });
     };
-  
+    
+    $scope.remove = function(id) {
+        console.log(id);
+        $http.delete('/api/contact/'+id).then(function(response){
+           refresh();
+        });
+    };
+    
+    $scope.edit = function(id) {
+        console.log(id);
+        $http.get('/api/contact/'+id).then(function(response){
+           $scope.contact = response.data; 
+        });
+    };
+    
+    $scope.update = function() {
+        console.log($scope.contact._id);
+        $http.put('/api/contact/'+$scope.contact._id,$scope.contact).then(function(response){
+           refresh();
+        });
+    }
+    
+    $scope.deselect = function() {
+     $scope.contact = "";
+    }
 }]);
