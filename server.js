@@ -4,8 +4,11 @@ var mongojs = require('mongojs');
 
 var db = mongojs('address',['contacts']);
 
-if (db == null ) {
-    db = mongojs("mongodb://admin:password@ds139899.mlab.com:39899/address");
+if (db === null ) {
+    console.log("connecting to mlab mongodb");
+     db = mongojs('admin:password@ds139899.mlab.com:39899/address', ['contacts'])
+} else {
+    console.log("connecting to codenvy mongodb");
 }
 
 var bodyParser = require('body-parser');
