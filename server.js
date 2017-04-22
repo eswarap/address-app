@@ -4,23 +4,18 @@ var mongojs = require('mongojs');
 
 var db = mongojs('address',['contacts']);
 
+if (process.env.NODE_ENV==='production') {
+    db = mongojs('admin:password@ds139899.mlab.com:39899/address', ['contacts']);
+    console.log("connecting to mlab mongodb");
+}
+
 db.on('error', function (err) {
 	console.log('database error', err);
-	 console.log("connecting to mlab mongodb");
-     db = mongojs('admin:password@ds139899.mlab.com:39899/address', ['contacts'])
 })
 
 db.on('connect', function () {
 	console.log('database connected')
 })
-
-
-
-if (db === null ) {
-
-} else {
-    console.log("connecting to codenvy mongodb");
-}
 
 var bodyParser = require('body-parser');
 
